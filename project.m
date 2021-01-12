@@ -25,42 +25,39 @@ y3 = transpose(y3(:, 2));
 % modulated signal
 mod_sig = y1 .* cos(t*w1) + y2 .* cos(t*w2) + y3 .* sin(t*w2);
 
-% demodulate signals with no shift
-de_y1 = mod_sig .* cos(t*w1);
-de_y2 = mod_sig .* cos(t*w2);
-de_y3 = mod_sig .* sin(t*w2);
-de_y1 = lowpass(de_y1, lowPassThresh);
-de_y2 = lowpass(de_y2, lowPassThresh);
-de_y3 = lowpass(de_y3, lowPassThresh);
+% demodulate signals
+de_y1 = demodulate(lowPassThresh, mod_sig, cos(t*w1))
+de_y2 = demodulate(lowPassThresh, mod_sig, cos(t*w2))
+de_y3 = demodulate(lowPassThresh, mod_sig, sin(t*w2))
 
-% The following are demodulating with different 
-% phase shifts
-% uncomment to listen to the output (one at a time)
+% sound(2*de_y1, fs);
+% sound(2*de_y2, fs);
+% sound(2*de_y3, fs);
 
-% demodulate signals with 10 shift
-% de_y1 = mod_sig .* cos(t*w1 + 10);
-% de_y2 = mod_sig .* cos(t*w2 + 10);
-% de_y3 = mod_sig .* sin(t*w2 + 10);
-% de_y1 = lowpass(de_y1, lowPassThresh);
-% de_y2 = lowpass(de_y2, lowPassThresh);
-% de_y3 = lowpass(de_y3, lowPassThresh);
+% Phse Shift
+de_y1_10 = demodulate(lowPassThresh, mod_sig, cos(t*w1+10))
+de_y2_10 = demodulate(lowPassThresh, mod_sig, cos(t*w2+10))
+de_y3_10 = demodulate(lowPassThresh, mod_sig, sin(t*w2+10))
 
-% demodulate signals with 30 shift
-% de_y1 = mod_sig .* cos(t*w1 + 30);
-% de_y2 = mod_sig .* cos(t*w2 + 30);
-% de_y3 = mod_sig .* sin(t*w2 + 30);
-% de_y1 = lowpass(de_y1, lowPassThresh);
-% de_y2 = lowpass(de_y2, lowPassThresh);
-% de_y3 = lowpass(de_y3, lowPassThresh);
+sound(2*de_y1_10, fs);
+sound(2*de_y2_10, fs);
+sound(2*de_y3_10, fs);
 
-% demodulate signals with 90 shift
-% de_y1 = mod_sig .* cos(t*w1 + 90);
-% de_y2 = mod_sig .* cos(t*w2 + 90);
-% de_y3 = mod_sig .* sin(t*w2 + 90);
-% de_y1 = lowpass(de_y1, lowPassThresh);
-% de_y2 = lowpass(de_y2, lowPassThresh);
-% de_y3 = lowpass(de_y3, lowPassThresh);
+de_y1_30 = demodulate(lowPassThresh, mod_sig, cos(t*w1+30))
+de_y2_30 = demodulate(lowPassThresh, mod_sig, cos(t*w2+30))
+de_y3_30 = demodulate(lowPassThresh, mod_sig, sin(t*w2+30))
 
+sound(2*de_y1_30, fs);
+sound(2*de_y2_30, fs);
+sound(2*de_y3_30, fs);
+
+de_y1_90 = demodulate(lowPassThresh, mod_sig, cos(t*w1+90))
+de_y2_90 = demodulate(lowPassThresh, mod_sig, cos(t*w2+90))
+de_y3_90 = demodulate(lowPassThresh, mod_sig, sin(t*w2+90))
+
+sound(2*de_y1_90, fs);
+sound(2*de_y2_90, fs);
+sound(2*de_y3_90, fs);
 
 % plot modulated signal
 figure 
@@ -72,6 +69,21 @@ figure
 plot(f, mag);
 
 
-sound(2*de_y1, fs);
-% sound(2*de_y2, fs);
-% sound(2*de_y3, fs);
+% plot demodulated signal 1 spectrum
+figure
+[mag, f] = frequency(de_y1, L, fs);
+plot(f, mag);
+
+% plot demodulated signal 2 spectrum
+figure
+[mag, f] = frequency(de_y2, L, fs);
+plot(f, mag);
+
+% plot demodulated signal 3 spectrum
+figure
+[mag, f] = frequency(de_y3, L, fs);
+plot(f, mag);
+
+% play demodulated signal
+% sound(2*de_y1, fs);
+
